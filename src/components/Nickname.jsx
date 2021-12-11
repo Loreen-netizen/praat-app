@@ -1,8 +1,24 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {io} from "socket.io-client"
 
 const KEYCODE = 13
 
+
+
+
 const Nickname = () => {
+    const socket= io("https://chat.peruzal.com")
+
+    useEffect(()=>{
+        socket.on("connect", ()=>{
+            console.log(socket.id)
+        })
+        socket.on("connect_error", (error)=>
+        console.log(error)
+        )
+       
+    },[socket])
+
     const [value, setValue] = useState("")
 console.log(value)
 
