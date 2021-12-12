@@ -2,7 +2,7 @@ import {useState} from "react"
 
 
 
-const MainChat = ({currentUser, userMessage, userListMessages,isUserJoined,onMessageSend, newMessage}) => {
+const MainChat = ({currentUser, userListMessages,isUserLoggedIn,onMessageSend, newMessage,userCount}) => {
 
     const [messageValue, setMessageValue] =  useState('')
 const handleMessageSent=(e)=>{
@@ -19,21 +19,20 @@ const handleMessageSent=(e)=>{
 
 
         <div>
+            <h2>Hello {currentUser}, Welcome to Praat group chat! </h2>
             <ul>
             {userListMessages.map(( user)=>
 <li>
-    {(isUserJoined) ?  `${currentUser} joined the chat` :  `${currentUser} left the chat`}</li>
+    {(isUserLoggedIn) ?  `${currentUser} joined the chat` :  `${currentUser} left the chat`}</li>
 )}
             </ul>
-           <span>{userListMessages.length} participants</span>
+           <span>{userCount} participants</span>
 
 {/* <div>from {userListMessages.username}: {userListMessages.message}</div> */}
-           <div style={{marginTop:"20px"}}><span>{ userMessage ? `new message ${userMessage} from ${currentUser}` : null}</span>
-           
-           </div>
            <div style={{marginTop:"20px"}}><span>{ newMessage ? `new message ${newMessage} from ${currentUser}` : null}</span>
            
            </div>
+           
             
  <div style={{display:"flex", flexDirection:"row", marginTop: "300px", justifyContent: "spaceAround"}}>
 
