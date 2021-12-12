@@ -2,8 +2,10 @@ import {useState} from "react"
 
 
 
-const MainChat = ({currentUser, userListMessages,isUserLoggedIn,onMessageSend, newMessage,userCount}) => {
+const MainChat = ({currentUser,onMessageSend, newMessage,userCount,messageSender, joinedUser, leftUser, appInformation}) => {
 
+
+console.log(appInformation,"appInformation")
     const [messageValue, setMessageValue] =  useState('')
 const handleMessageSent=(e)=>{
    
@@ -11,7 +13,6 @@ const handleMessageSent=(e)=>{
    
     setMessageValue("")
 }
-   console.log(e.target.value)
    
 }
 
@@ -21,17 +22,23 @@ const handleMessageSent=(e)=>{
         <div>
             <h2>Hello {currentUser}, Welcome to Praat group chat! </h2>
             <ul>
-            {userListMessages.map(( user)=>
-<li>
-    {(isUserLoggedIn) ?  `${currentUser} joined the chat` :  `${currentUser} left the chat`}</li>
-)}
+            {appInformation.map(( data)=>{
+                return(
+                   
+                       <div key={data}>
+                            <li>{data !== "" ?  data : null} </li>   
+                       </div>
+                )
+            }
+  
+ )} 
             </ul>
-           <span>{userCount} participants</span>
-
+          
+            {/* <li> {`${data.joinedUser} joined the chat`}</li> */}
 {/* <div>from {userListMessages.username}: {userListMessages.message}</div> */}
-           <div style={{marginTop:"20px"}}><span>{ newMessage ? `new message ${newMessage} from ${currentUser}` : null}</span>
+           {/* <div style={{marginTop:"20px"}}><span>{ newMessage ? `new message ${newMessage} from ${messageSender}` : null}</span>
            
-           </div>
+           </div> */}
            
             
  <div style={{display:"flex", flexDirection:"row", marginTop: "300px", justifyContent: "spaceAround"}}>

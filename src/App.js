@@ -18,17 +18,29 @@ function App() {
       socket.on("connect_error", (error)=>
       console.log(error, "errormessage")
       )
-     
-      socket.on("new message", (message)=> setNewMessage(message.message))
-      socket.on("user joined", (userObject)=>  console.log(userObject, "userjoined")
+      socket.on("new message", (message)=> {
+        return (setNewMessage(message.message), 
+        setMessageSender(message.username ? message.username : "Unkown sender"),
+        setAppInformation((prev)=>[...prev, `new message ${message.message} from ${message.username ? message.username : "Unkown sender"}`])
       
-      // displayMessage(userObject)
-    )
-    socket.on("login",(logInObject)=>setUsercount(logInObject.numUsers))
-      socket.on("user left", (userLeft)=>  
-      // displayMessage(userLeft)
-       console.log(userLeft,"userLeft")
-      )
+      )})
+      socket.on("user joined", (userObject)=> {
+        return(
+          setJoinedUser(userObject.username),
+          setAppInformation((prev)=>[...prev,`${userObject.username} joined the chat`])
+        )
+      } )
+    
+    
+    socket.on("login",(logInObject)=>{
+      return (setUsercount(logInObject.numUsers),
+       setAppInformation((prev)=> [...prev, `${logInObject.numUsers} participants`]))})
+
+      socket.on("user left", (userLeft)=> {
+        return (setLeftUser(userLeft),
+        setAppInformation((prev)=> [...prev, `${userLeft.username} left the chat`])
+        )})
+      
       socket.on("typing", (typing)=> console.log("typing",typing))
       socket.on("stop typing", (stoptyping)=> console.log("stop typing",stoptyping))
       socket.on("disconnect",(message)=> console.log(message, "disconnected"))
@@ -46,10 +58,15 @@ function App() {
   const [isUserLoggedIn, setUserLoggedIn] = useState(false)
   const [userListMessages, setUserListMessages] = useState([])
   const [currentUser, setCurrentUser] = useState("")
+  const [joinedUser, setJoinedUser] = useState("")
+  const [leftUser, setLeftUser] = useState('')
   // const [userMessage, setUserMessage] = useState("")
   const [previousMessages, setPreviousMessages]= useState([])
   const [newMessage,setNewMessage] = useState("")
   const [userCount, setUsercount] = useState(0)
+  const [messageSender, setMessageSender] = useState("")
+  const [appInformation, setAppInformation] = useState([])
+  // const appInformation = [userCount, newMessage , joinedUser, leftUser]
   const displayMessage = (message,)=>{
     // {username: 'mimi\', message: 'hi from mimi'} 
     console.log(message,"joined")
@@ -77,7 +94,7 @@ setPreviousMessages([...previousMessages,message.message ])
   return (
     <div className="App">
      {!isUserLoggedIn ?  <Nickname onNickNameSubmit={onNickNameSubmit}/> :  
-      <MainChat currentUser={currentUser} userListMessages={userListMessages} isUserLoggedIn={isUserLoggedIn} newMessage={newMessage} onMessageSend={onMessageSend} userCount={userCount}/>}
+      <MainChat currentUser={currentUser} userListMessages={userListMessages} isUserLoggedIn={isUserLoggedIn} newMessage={newMessage} onMessageSend={onMessageSend} userCount={userCount} messageSender={messageSender} joinedUser={joinedUser} leftUser={leftUser} appInformation={appInformation}/>}
      
     </div>
   );
