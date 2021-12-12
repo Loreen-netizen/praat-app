@@ -11,6 +11,7 @@ const Nickname = () => {
 
     useEffect(()=>{
         socket.on("connect", ()=>{
+            // TODO set visible icon for connection status, are you connected or not
             console.log(socket.id)
         })
         socket.on("connect_error", (error)=>
@@ -24,7 +25,7 @@ console.log(value)
 
 const handleInputChange = (e) =>{
     if(e.keyCode=== KEYCODE){
-        setValue(e.target.value)
+        socket.emit("add user", e.target.value)
     }
 }
 
