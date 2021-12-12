@@ -50,11 +50,11 @@ function App() {
         // socket.off("user joined")
         // socket.off("new message")
         // socket.off("connect")
-        // socket.disconnect()
+        socket.disconnect()
       }
      
   },[socket])
-
+console.log()
   const [isUserLoggedIn, setUserLoggedIn] = useState(false)
   const [userListMessages, setUserListMessages] = useState([])
   const [currentUser, setCurrentUser] = useState("")
@@ -69,9 +69,9 @@ function App() {
   // const appInformation = [userCount, newMessage , joinedUser, leftUser]
   const displayMessage = (message,)=>{
     // {username: 'mimi\', message: 'hi from mimi'} 
-    console.log(message,"joined")
+    // console.log(message,"joined")
 
-console.log(message.username, message.message, "fromdisplaymessage")
+// console.log(message.username, message.message, "fromdisplaymessage")
 // setCurrentUser(message.username)
 // setUserMessage(message.message)
 setUserListMessages([...userListMessages, message])
@@ -90,6 +90,7 @@ setPreviousMessages([...previousMessages,message.message ])
     console.log(newMessage)
     // setNewMessage(newMessage)
     socket.emit("new message", newMessage)
+    setAppInformation((prev)=>[...prev, `new message ${newMessage} from ${currentUser}`])
   }
   return (
     <div className="App">
